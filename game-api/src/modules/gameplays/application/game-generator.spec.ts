@@ -12,7 +12,7 @@ describe('GameGenerator', () => {
     const generator = new GameGenerator(mockProvider);
     const game = await generator.execute();
 
-    expect(mockProvider.getCardContents).toHaveBeenCalledWith(10);
+    expect(mockProvider.getCardContents).toHaveBeenCalledWith(4);
 
     const deck = game.getDeck();
     expect(deck).toHaveLength(4);
