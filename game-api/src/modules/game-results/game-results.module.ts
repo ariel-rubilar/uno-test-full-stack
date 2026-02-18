@@ -7,6 +7,7 @@ import { InMemoryGameResultsRepository } from './infrastructure/persistence/inme
 import { GAME_RESULT_REPOSITORY } from './game-results.token';
 import { GameResultRecoder } from './application/game-result-recoder';
 import { GameResultRepository } from './domain/game-result-repository';
+import { GameResultFinder } from './application/game-result-finder';
 
 @Module({
   imports: [SessionModule],
@@ -19,6 +20,11 @@ import { GameResultRepository } from './domain/game-result-repository';
     {
       provide: GameResultRecoder,
       useFactory: (repo: GameResultRepository) => new GameResultRecoder(repo),
+      inject: [GAME_RESULT_REPOSITORY],
+    },
+    {
+      provide: GameResultFinder,
+      useFactory: (repo: GameResultRepository) => new GameResultFinder(repo),
       inject: [GAME_RESULT_REPOSITORY],
     },
   ],

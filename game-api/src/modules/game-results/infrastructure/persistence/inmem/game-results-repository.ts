@@ -11,15 +11,15 @@ export class InMemoryGameResultsRepository implements GameResultRepository {
     return Promise.resolve();
   }
 
-  listByRun(
-    run: string,
-    options?: {
-      limit?: number;
-      offset?: number;
-    },
-  ): Promise<GameResult[]> {
-    const results = this.results.filter(
-      (result) => result.getPlayerRun() === run,
+  list(options?: {
+    limit?: number;
+    offset?: number;
+    run?: string;
+  }): Promise<GameResult[]> {
+    const reversed = this.results.toReversed();
+
+    const results = reversed.filter((result) =>
+      options?.run ? result.getPlayerRun() === options.run : true,
     );
 
     const offset = options?.offset || 0;

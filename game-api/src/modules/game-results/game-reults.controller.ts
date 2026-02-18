@@ -1,10 +1,22 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { GameResultRecoder } from './application/game-result-recoder';
 import { SessionAuthGuard } from 'src/shared/infractucture/session/session.guard';
+import { GameResultFinder } from './application/game-result-finder';
 
 @Controller('game-results')
 export class GameResultsController {
-  constructor(private readonly recoder: GameResultRecoder) {}
+  constructor(
+    private readonly recoder: GameResultRecoder,
+    private readonly finder: GameResultFinder,
+  ) {}
 
   @UseGuards(SessionAuthGuard)
   @Post()
@@ -14,6 +26,8 @@ export class GameResultsController {
       correctPairs: number;
       totalPairs: number;
       failedAttempts: number;
+      attempts: number;
+      maxAttempts: number;
     },
     @Req()
     req: Request & { userId: string; userName: string; userRun: string },
@@ -22,6 +36,13 @@ export class GameResultsController {
       playerName: req.userName,
       playerRun: req.userRun,
       ...body,
+    });
+  }
+
+  @Get()
+  async list(@Query() query: { run?: string }) {
+    return this.finder.execute({
+      run: query.run,
     });
   }
 }

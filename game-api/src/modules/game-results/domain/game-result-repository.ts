@@ -3,14 +3,12 @@ import { GameResult } from './game-result';
 type ListGameResultsOptions = {
   limit?: number;
   offset?: number;
+  run?: string;
 };
 
 interface GameResultRepository {
   save: (gameResult: GameResult) => Promise<void>;
-  listByRun: (
-    run: string,
-    options?: ListGameResultsOptions,
-  ) => Promise<GameResult[]>;
+  list: (options?: ListGameResultsOptions) => Promise<GameResult[]>;
 }
 
 export type { GameResultRepository };
