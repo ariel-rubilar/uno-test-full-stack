@@ -1,9 +1,8 @@
 "use client";
 
-import { getMe } from "@/features/auth/services/auth.services";
 import { useAuthStore } from "@/features/auth/stores/auth.store";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useGetUser } from "../hooks/useGetUser";
 
 export const AuthInitializer = ({
   children,
@@ -13,11 +12,7 @@ export const AuthInitializer = ({
   const setUser = useAuthStore((s) => s.setUser);
   const setIsLoading = useAuthStore((s) => s.setIsLoading);
 
-  const { isLoading, isError, isSuccess, data } = useQuery({
-    queryKey: ["me"],
-    queryFn: getMe,
-    retry: false,
-  });
+  const { isLoading, isError, isSuccess, data } = useGetUser();
 
   useEffect(() => {
     setIsLoading(isLoading);

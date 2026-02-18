@@ -3,26 +3,18 @@
 import { useState } from "react";
 
 import { User, Gamepad2 } from "lucide-react";
-import { useAuthStore } from "@/features/auth/stores/auth.store";
-import { useMutation } from "@tanstack/react-query";
-import { login } from "@/features/auth/services/auth.services";
+
 import { Label } from "@/shared/components/ui/Label";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Card } from "@/shared/components/ui/Card";
+import { useLogin } from "../hooks/useLogin";
 
 export const PlayerForm = () => {
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
 
-  const setUser = useAuthStore((s) => s.setUser);
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: login,
-    onSuccess: (data) => {
-      setUser(data);
-    },
-  });
+  const { mutate, isPending } = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

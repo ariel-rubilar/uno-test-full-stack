@@ -3,8 +3,7 @@
 import { useAuthStore } from "@/features/auth/stores/auth.store";
 import { AuthContextProvider } from "./AuthContext";
 
-import { useMutation } from "@tanstack/react-query";
-import { logout } from "../../services/auth.services";
+import { useLogout } from "../hooks/useLogout";
 
 export const AuthGuard = ({
   children,
@@ -19,17 +18,10 @@ export const AuthGuard = ({
 
   const user = useAuthStore((s) => s.user);
 
-  const setUser = useAuthStore((s) => s.setUser);
-
-  const { mutateAsync } = useMutation({
-    mutationFn: logout,
-    retry: false,
-  });
+  const { mutate } = useLogout();
 
   const handleLogout = () => {
-    mutateAsync().then(() => {
-      setUser(null);
-    });
+    mutate();
   };
 
   if (isLoading) {
