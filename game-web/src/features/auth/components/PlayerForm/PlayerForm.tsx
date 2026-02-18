@@ -8,7 +8,7 @@ import { Label } from "@/shared/components/ui/Label";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Card } from "@/shared/components/ui/Card";
-import { useLogin } from "../hooks/useLogin";
+import { useLogin } from "../../hooks/useLogin";
 import { useRouter } from "next/navigation";
 import { RutInput } from "@/shared/components/RutInput";
 import { cleanRut } from "@/shared/rut/clean-rut";
