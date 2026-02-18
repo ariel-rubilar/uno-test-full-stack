@@ -23,12 +23,12 @@ export type GameStatus = "playing" | "won" | "lost" | "loading";
 
 export type GameplayStore = {
   cards: GameCard[];
-  attemps: number;
+  attempts: number;
   flippedIds: string[];
   correctPairs: number;
   gameStatus: GameStatus;
   start: () => void;
-  maxAttemps: number;
+  maxAttempts: number;
   flipCard: (id: string) => void;
   timeoutId: NodeJS.Timeout | null;
   totalPairs: number;

@@ -3,12 +3,12 @@ import { createStore } from "zustand/vanilla";
 
 export const createGameplayStore = () =>
   createStore<GameplayStore>((set) => ({
-    attemps: 0,
+    attempts: 0,
     cards: [],
     correctPairs: 0,
     flippedIds: [],
     gameStatus: "loading",
-    maxAttemps: 0,
+    maxAttempts: 0,
     timeoutId: null,
     totalPairs: 0,
     failedAttempts: 0,
@@ -17,7 +17,7 @@ export const createGameplayStore = () =>
         if (state.timeoutId) clearTimeout(state.timeoutId);
 
         return {
-          attemps: 0,
+          attempts: 0,
           cards: state.cards.map((c) => ({
             ...c,
             isFlipped: false,
@@ -44,7 +44,7 @@ export const createGameplayStore = () =>
         if (state.timeoutId) clearTimeout(state.timeoutId);
 
         return {
-          attemps: 0,
+          attempts: 0,
           cards: cards.map((c) => ({
             ...c,
             isFlipped: true,
@@ -53,7 +53,7 @@ export const createGameplayStore = () =>
           gameStatus: "loading",
           correctPairs: 0,
           flippedIds: [],
-          maxAttemps,
+          maxAttempts: maxAttemps,
           timeoutId: null,
           totalPairs: cards.length / 2,
           failedAttempts: 0,
@@ -94,7 +94,7 @@ export const createGameplayStore = () =>
 
           const newFailedAttempts = state.failedAttempts + 1;
 
-          const newAttemps = state.attemps + 1;
+          const newAttemps = state.attempts + 1;
 
           const newCards = state.cards.map((c) =>
             c.id === a || c.id === b
@@ -112,14 +112,14 @@ export const createGameplayStore = () =>
 
           if (isAllMatched) {
             newStatus = "won";
-          } else if (newAttemps >= state.maxAttemps) {
+          } else if (newAttemps >= state.maxAttempts) {
             newStatus = "lost";
           }
 
           return {
             cards: newCards,
             flippedIds: [],
-            attemps: newAttemps,
+            attempts: newAttemps,
             correctPairs: isMatch ? state.correctPairs + 1 : state.correctPairs,
             timeoutId: null,
             gameStatus: newStatus,
