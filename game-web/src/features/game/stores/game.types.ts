@@ -32,6 +32,7 @@ export type GameplayStore = {
   flipCard: (id: string) => void;
   timeoutId: NodeJS.Timeout | null;
   totalPairs: number;
+  failedAttempts: number;
   loadCard: (
     card: {
       id: string;

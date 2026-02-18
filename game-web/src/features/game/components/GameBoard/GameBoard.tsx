@@ -6,6 +6,7 @@ import { start } from "../../servcies/gemaplays.services";
 import { GameOver } from "../GameOver/GameOver";
 import { GameStats } from "../GameStats";
 import { useGameplayStore } from "../../contexts/GameplayContext";
+import { recordResult } from "../../servcies/game-results.services";
 
 export const GameBoard = () => {
   const cards = useGameplayStore((s) => s.cards);
@@ -17,6 +18,7 @@ export const GameBoard = () => {
   const maxAttemps = useGameplayStore((s) => s.maxAttemps);
   const correctPairs = useGameplayStore((s) => s.correctPairs);
   const totalPairs = useGameplayStore((s) => s.totalPairs);
+  const failedAttempts = useGameplayStore((s) => s.failedAttempts);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -58,6 +60,25 @@ export const GameBoard = () => {
     await initGame();
   };
 
+  const saveResult = useCallback(async () => {
+    await recordResult({
+      correctPairs,
+      failedAttempts,
+      totalPairs,
+    }).catch((e) => {
+      console.error(e);
+    });
+  }, [correctPairs, failedAttempts, totalPairs]);
+
+  const isGaveOver = gameStatus !== "playing" && gameStatus !== "loading";
+
+  useEffect(() => {
+    console.log(isGaveOver);
+    if (isGaveOver) {
+      saveResult();
+    }
+  }, [gameStatus, saveResult, isGaveOver]);
+
   return (
     <div className="flex flex-col gap-6">
       <GameStats
@@ -76,7 +97,7 @@ export const GameBoard = () => {
           />
         ))}
       </div>
-      {gameStatus !== "playing" && gameStatus !== "loading" && (
+      {isGaveOver && (
         <GameOver
           attempts={attempts}
           correctPairs={correctPairs}
