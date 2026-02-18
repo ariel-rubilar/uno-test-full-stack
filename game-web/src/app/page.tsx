@@ -1,6 +1,7 @@
 import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { PlayerForm } from "@/features/auth/components/PlayerForm";
 import { PlayerWelcome } from "@/features/auth/components/PlayerWelcome";
+import { ResultsTable } from "@/features/game/components/ResultTable";
 import { Layers } from "lucide-react";
 
 export default function Home() {
@@ -30,7 +31,9 @@ export default function Home() {
             </AuthGuard>
           </div>
 
-          <div className="flex-1"></div>
+          <div className="flex-1">
+            <ResultsTable />
+          </div>
         </div>
       </div>
     </main>

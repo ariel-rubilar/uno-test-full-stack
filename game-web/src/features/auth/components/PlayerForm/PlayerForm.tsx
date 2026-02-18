@@ -11,6 +11,7 @@ import { Card } from "@/shared/components/ui/Card";
 import { useLogin } from "../hooks/useLogin";
 import { useRouter } from "next/navigation";
 import { RutInput } from "@/shared/components/RutInput";
+import { cleanRut } from "@/shared/rut/clean-rut";
 
 export const PlayerForm = () => {
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ export const PlayerForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !rut.trim()) return;
-    await mutateAsync({ name: name.trim(), run: rut.trim() });
+    await mutateAsync({ name: name.trim(), run: cleanRut(rut.trim()) });
     router.push("/play");
   };
 
@@ -39,6 +40,16 @@ export const PlayerForm = () => {
       <Card.Content>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
+            <Label htmlFor="rut">Run</Label>
+            <RutInput
+              id="rut"
+              placeholder="12.345.678-9"
+              value={rut}
+              onChange={(e) => setRut(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
@@ -49,16 +60,7 @@ export const PlayerForm = () => {
               autoComplete="name"
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="rut">Nickname</Label>
-            <RutInput
-              id="rut"
-              placeholder="12.345.678-9"
-              value={rut}
-              onChange={(e) => setRut(e.target.value)}
-              required
-            />
-          </div>
+
           <Button
             type="submit"
             size="lg"
