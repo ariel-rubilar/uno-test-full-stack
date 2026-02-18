@@ -11,6 +11,7 @@ export const createGameplayStore = () =>
     maxAttemps: 0,
     timeoutId: null,
     totalPairs: 0,
+    failedAttempts: 0,
     start: () => {
       set((state) => {
         if (state.timeoutId) clearTimeout(state.timeoutId);
@@ -26,6 +27,7 @@ export const createGameplayStore = () =>
           correctPairs: 0,
           flippedIds: [],
           timeoutId: null,
+          failedAttempts: 0,
         };
       });
     },
@@ -54,6 +56,7 @@ export const createGameplayStore = () =>
           maxAttemps,
           timeoutId: null,
           totalPairs: cards.length / 2,
+          failedAttempts: 0,
         };
       }),
     flipCard: (id: string) => {
@@ -89,6 +92,8 @@ export const createGameplayStore = () =>
 
           const isMatch = first.value === second.value;
 
+          const newFailedAttempts = state.failedAttempts + 1;
+
           const newAttemps = state.attemps + 1;
 
           const newCards = state.cards.map((c) =>
@@ -118,6 +123,7 @@ export const createGameplayStore = () =>
             correctPairs: isMatch ? state.correctPairs + 1 : state.correctPairs,
             timeoutId: null,
             gameStatus: newStatus,
+            failedAttempts: newFailedAttempts,
           };
         });
       }, 800);
