@@ -19,7 +19,7 @@ export const PlayerWelcome = () => {
           Welcome back, <span className="text-primary">{user.name}</span>
         </Card.Title>
         <Card.Description>
-          {user.name} — Ready for another round?
+          {user.run} — Ready for another round?
         </Card.Description>
       </Card.Header>
       <Card.Content className="flex flex-col gap-3">

@@ -11,6 +11,8 @@ export class GameResult {
     public readonly outcome: Outcome,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
+    public readonly attempts: number,
+    public readonly maxAttempts: number,
   ) {}
 
   static create(props: {
@@ -19,6 +21,8 @@ export class GameResult {
     correctPairs: number;
     totalPairs: number;
     failedAttempts: number;
+    attempts: number;
+    maxAttempts: number;
   }): GameResult {
     const id = crypto.randomUUID();
     const createdAt = new Date();
@@ -36,6 +40,8 @@ export class GameResult {
       outcome,
       createdAt,
       updatedAt,
+      props.attempts,
+      props.maxAttempts,
     );
   }
 
@@ -73,5 +79,13 @@ export class GameResult {
 
   getUpdatedAt() {
     return this.updatedAt;
+  }
+
+  getAttemps() {
+    return this.attempts;
+  }
+
+  getMaxAttemps() {
+    return this.maxAttempts;
   }
 }

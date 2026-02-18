@@ -11,6 +11,8 @@ export class GameResultRecoder {
     failedAttempts,
     playerRun,
     totalPairs,
+    attempts,
+    maxAttempts,
   }: Commad) {
     const result = GameResult.create({
       playerName,
@@ -18,6 +20,8 @@ export class GameResultRecoder {
       correctPairs,
       totalPairs,
       failedAttempts,
+      attempts,
+      maxAttempts,
     });
 
     return this.repository.save(result);

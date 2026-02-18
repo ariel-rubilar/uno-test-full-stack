@@ -1,4 +1,5 @@
-export type Commad = {
+export type GameResult = {
+  id: string;
   playerName: string;
   playerRun: string;
   correctPairs: number;
@@ -6,4 +7,7 @@ export type Commad = {
   failedAttempts: number;
   attempts: number;
   maxAttempts: number;
+  outcome: "win" | "lose";
+  createdAt: string;
+  updatedAt: string;
 };

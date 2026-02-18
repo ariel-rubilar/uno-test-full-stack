@@ -14,8 +14,8 @@ export const GameBoard = () => {
   const loadCards = useGameplayStore((s) => s.loadCard);
   const flipCard = useGameplayStore((s) => s.flipCard);
   const gameStatus = useGameplayStore((s) => s.gameStatus);
-  const attempts = useGameplayStore((s) => s.attemps);
-  const maxAttemps = useGameplayStore((s) => s.maxAttemps);
+  const attempts = useGameplayStore((s) => s.attempts);
+  const maxAttempts = useGameplayStore((s) => s.maxAttempts);
   const correctPairs = useGameplayStore((s) => s.correctPairs);
   const totalPairs = useGameplayStore((s) => s.totalPairs);
   const failedAttempts = useGameplayStore((s) => s.failedAttempts);
@@ -65,10 +65,12 @@ export const GameBoard = () => {
       correctPairs,
       failedAttempts,
       totalPairs,
+      attempts,
+      maxAttempts,
     }).catch((e) => {
       console.error(e);
     });
-  }, [correctPairs, failedAttempts, totalPairs]);
+  }, [correctPairs, failedAttempts, totalPairs, attempts, maxAttempts]);
 
   const isGaveOver = gameStatus !== "playing" && gameStatus !== "loading";
 
@@ -83,7 +85,7 @@ export const GameBoard = () => {
     <div className="flex flex-col gap-6">
       <GameStats
         attempts={attempts}
-        maxAttempts={maxAttemps}
+        maxAttempts={maxAttempts}
         correctPairs={correctPairs}
         totalPairs={totalPairs}
       />
@@ -103,7 +105,7 @@ export const GameBoard = () => {
           correctPairs={correctPairs}
           onReplay={handleRetry}
           won={gameStatus === "won"}
-          maxAttempts={maxAttemps}
+          maxAttempts={maxAttempts}
           totalPairs={totalPairs}
         />
       )}
