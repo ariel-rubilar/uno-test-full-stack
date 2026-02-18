@@ -50,7 +50,7 @@ describe('GameplaysController', () => {
 
       const result = await controller.start();
 
-      expect(cardProviderMock.getCardContents).toHaveBeenCalledWith(10);
+      expect(cardProviderMock.getCardContents).toHaveBeenCalledWith(4);
       expect(result.getDeck()).toHaveLength(4); // 2 pairs
     });
   });
