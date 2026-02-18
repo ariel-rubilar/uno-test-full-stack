@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { MemoryCard } from "../MemoryCard";
-import { start } from "../../servcies/gemaplays.services";
 import { GameOver } from "../GameOver/GameOver";
 import { GameStats } from "../GameStats";
 import { useGameplayStore } from "../../contexts/GameplayContext";
-import { recordResult } from "../../servcies/game-results.services";
+import { useRecordResult } from "../../hooks/useRecordResult";
+import { useLazyStartGame } from "../../hooks/useLazyStartGame";
 
 export const GameBoard = () => {
   const cards = useGameplayStore((s) => s.cards);
@@ -22,12 +22,18 @@ export const GameBoard = () => {
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const { mutate } = useRecordResult();
+
+  const { refetch } = useLazyStartGame();
+
   const initGame = useCallback(async () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    const data = await start();
+    const { data } = await refetch();
+
+    if (data == null) return;
 
     loadCards(
       data.cards.map((c) => ({
@@ -44,7 +50,7 @@ export const GameBoard = () => {
     timeoutRef.current = setTimeout(() => {
       startGame();
     }, 1500);
-  }, [loadCards, startGame]);
+  }, [loadCards, startGame, refetch]);
 
   useEffect(() => {
     initGame();
@@ -60,22 +66,19 @@ export const GameBoard = () => {
     await initGame();
   };
 
-  const saveResult = useCallback(async () => {
-    await recordResult({
+  const saveResult = useCallback(() => {
+    mutate({
       correctPairs,
       failedAttempts,
       totalPairs,
       attempts,
       maxAttempts,
-    }).catch((e) => {
-      console.error(e);
     });
-  }, [correctPairs, failedAttempts, totalPairs, attempts, maxAttempts]);
+  }, [correctPairs, failedAttempts, totalPairs, attempts, maxAttempts, mutate]);
 
   const isGaveOver = gameStatus !== "playing" && gameStatus !== "loading";
 
   useEffect(() => {
-    console.log(isGaveOver);
     if (isGaveOver) {
       saveResult();
     }

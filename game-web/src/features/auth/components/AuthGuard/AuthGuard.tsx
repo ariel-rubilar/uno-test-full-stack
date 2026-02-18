@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/features/auth/stores/auth.store";
 import { AuthContextProvider } from "./AuthContext";
 
-import { useLogout } from "../hooks/useLogout";
+import { useLogout } from "../../hooks/useLogout";
 
 export const AuthGuard = ({
   children,

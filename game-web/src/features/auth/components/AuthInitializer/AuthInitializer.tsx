@@ -2,7 +2,7 @@
 
 import { useAuthStore } from "@/features/auth/stores/auth.store";
 import { useEffect } from "react";
-import { useGetUser } from "../hooks/useGetUser";
+import { useGetUser } from "../../hooks/useGetUser";
 
 export const AuthInitializer = ({
   children,
