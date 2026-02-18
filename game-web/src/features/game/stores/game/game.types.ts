@@ -6,13 +6,6 @@ export type GameCard = {
   isMatched: boolean;
 };
 
-const [cards, setCards] = useState<GameCard[]>(() => createDeck());
-const [flippedIds, setFlippedIds] = useState<number[]>([]);
-const [attempts, setAttempts] = useState(0);
-const [correctPairs, setCorrectPairs] = useState(0);
-const [gameStatus, setGameStatus] = useState<GameStatus>("playing");
-const [isChecking, setIsChecking] = useState(false);
-
 export type GameplayStore = {
   cards: GameCard[];
   attemps: number;
