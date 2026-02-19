@@ -24,9 +24,14 @@ export function GameStats({
       <div className="flex items-center justify-between gap-6">
         <div className="flex items-center gap-2">
           <MousePointerClick className="size-4 text-primary" />
-          <span className="text-sm font-medium text-foreground">Attempts</span>
+          <span className="text-sm font-medium text-foreground" id="attempts">
+            Attempts
+          </span>
         </div>
-        <span className="font-mono text-sm font-bold text-foreground">
+        <span
+          className="font-mono text-sm font-bold text-foreground"
+          aria-labelledby="attempts"
+        >
           {attempts} / {maxAttempts}
         </span>
       </div>
@@ -35,11 +40,17 @@ export function GameStats({
       <div className="flex items-center justify-between gap-6">
         <div className="flex items-center gap-2">
           <Target className="size-4 text-accent" />
-          <span className="text-sm font-medium text-foreground">
+          <span
+            className="text-sm font-medium text-foreground"
+            id="pairs-found"
+          >
             Pairs Found
           </span>
         </div>
-        <span className="font-mono text-sm font-bold text-foreground">
+        <span
+          className="font-mono text-sm font-bold text-foreground"
+          aria-labelledby="pairs-found"
+        >
           {correctPairs} / {totalPairs}
         </span>
       </div>

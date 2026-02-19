@@ -8,7 +8,7 @@ export type GameCard = {
 
 export type GameplayStore = {
   cards: GameCard[];
-  attemps: number;
+  attempts: number;
   flippedIds: [string, string];
   correctPairs: number;
   gameStatus: GameStatus;

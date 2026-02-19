@@ -8,7 +8,11 @@ import { useGameplayStore } from "../../contexts/GameplayContext";
 import { useRecordResult } from "../../hooks/useRecordResult";
 import { useLazyStartGame } from "../../hooks/useLazyStartGame";
 
-export const GameBoard = () => {
+export const GameBoard = ({
+  delayToStart = 1500,
+}: {
+  delayToStart?: number;
+}) => {
   const cards = useGameplayStore((s) => s.cards);
   const startGame = useGameplayStore((s) => s.start);
   const loadCards = useGameplayStore((s) => s.loadCard);
@@ -49,8 +53,8 @@ export const GameBoard = () => {
 
     timeoutRef.current = setTimeout(() => {
       startGame();
-    }, 1500);
-  }, [loadCards, startGame, refetch]);
+    }, delayToStart);
+  }, [loadCards, startGame, refetch, delayToStart]);
 
   useEffect(() => {
     initGame();
