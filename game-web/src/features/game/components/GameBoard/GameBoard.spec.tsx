@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach, beforeAll } from "vitest";
 import {
   cleanup,
   fireEvent,
@@ -87,6 +87,10 @@ const saveResultHandler = () => {
 };
 
 describe("GameBoard", () => {
+  beforeAll(() => {
+    server.use(startHandler([], 0));
+  });
+
   afterEach(() => {
     cleanup();
   });
