@@ -6,6 +6,7 @@ import { RotateCcw, Home, Trophy, XCircle } from "lucide-react";
 import { Card } from "@/shared/components/ui/Card";
 import { Button } from "@/shared/components/ui/Button";
 import { Badge } from "@/shared/components/ui/Badge";
+import UserDisplay from "@/features/auth/components/UserDisplay/UserDisplay";
 
 interface GameOverProps {
   won: boolean;
@@ -38,6 +39,16 @@ export const GameOver = ({
               <Card.Title className="mt-3 text-2xl text-foreground">
                 You Won!
               </Card.Title>
+              <UserDisplay>
+                {(user) => (
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    Player:{" "}
+                    <span className="font-semibold text-primary">
+                      {user.name}
+                    </span>
+                  </div>
+                )}
+              </UserDisplay>
               <Card.Description>
                 Great memory! You found all pairs.
               </Card.Description>
@@ -50,6 +61,16 @@ export const GameOver = ({
               <Card.Title className="mt-3 text-2xl text-foreground">
                 Game Over
               </Card.Title>
+              <UserDisplay>
+                {(user) => (
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    Player:{" "}
+                    <span className="font-semibold text-primary">
+                      {user.name}
+                    </span>
+                  </div>
+                )}
+              </UserDisplay>
               <Card.Description>
                 You ran out of attempts. Try again!
               </Card.Description>

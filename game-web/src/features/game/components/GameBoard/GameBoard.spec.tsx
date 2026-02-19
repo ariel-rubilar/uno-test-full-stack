@@ -11,6 +11,7 @@ import { GameplayProvider } from "../../contexts/GameplayContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { server } from "@/shared/test/server";
 import { http, HttpResponse } from "msw";
+import { AuthContextProvider } from "@/features/auth/components/AuthGuard/AuthContext";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -35,9 +36,15 @@ const createTestQueryClient = () =>
 const renderWithProvider = (ui: React.ReactElement) => {
   const client = createTestQueryClient();
   return render(
-    <GameplayProvider>
-      <QueryClientProvider client={client}>{ui}</QueryClientProvider>
-    </GameplayProvider>,
+    <AuthContextProvider
+      user={{ id: "1", name: "USER TEST NAME", run: "12345678-9" }}
+      logout={vi.fn()}
+    >
+      <GameplayProvider>
+        <QueryClientProvider client={client}>{ui}</QueryClientProvider>
+      </GameplayProvider>
+      ,
+    </AuthContextProvider>,
   );
 };
 
@@ -161,6 +168,7 @@ describe("GameBoard", () => {
 
       await waitFor(() => {
         screen.getByText(/You Won!/);
+        screen.getByText(/USER TEST NAME/);
       });
     });
 
@@ -207,6 +215,7 @@ describe("GameBoard", () => {
 
       await waitFor(() => {
         screen.getByText(/Game Over/);
+        screen.getByText(/USER TEST NAME/);
       });
     });
   });

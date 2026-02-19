@@ -1,3 +1,6 @@
+"use client";
+
+import UserDisplay from "@/features/auth/components/UserDisplay/UserDisplay";
 import { GameBoard } from "@/features/game/components/GameBoard";
 import { GameplayProvider } from "@/features/game/contexts/GameplayContext";
 import { Button } from "@/shared/components/ui/Button";
@@ -18,7 +21,14 @@ export default function Play() {
                 Memory Match
               </h1>
               <p className="text-xs text-muted-foreground">
-                Playing as <span className="font-medium text-primary"></span>
+                Playing as{" "}
+                <UserDisplay>
+                  {(user) => (
+                    <span className="font-medium text-primary">
+                      {user.name}
+                    </span>
+                  )}
+                </UserDisplay>
               </p>
             </div>
           </div>
