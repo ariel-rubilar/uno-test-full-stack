@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UNO Game Web
 
-## Getting Started
+This is the frontend for the UNO AFP Challenge, built with Next.js and styled with Tailwind CSS.
 
-First, run the development server:
+---
+
+## Quick Start for Developers
+
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- PNPM (for dependency management)
+- Docker (for running the backend API or database)
+- Git
+
+---
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@github.com:ariel-rubilar/uno-test-full-stack.git
+cd uno-test-full-stack/game-web
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Configure Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env-example` to `.env` and adjust if needed:
 
-## Learn More
+```bash
+cp .env-example .env
+```
 
-To learn more about Next.js, take a look at the following resources:
+By default, the app expects the backend API to be available at `http://localhost:3001`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Start the Backend API
 
-## Deploy on Vercel
+You can use either a local API or the Docker API:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Local API:**  
+  Start the backend locally (from `uno-test-full-stack/game-api`):
+  ```bash
+  pnpm install
+  pnpm run start:dev
+  ```
+  The API will run at [http://localhost:3001](http://localhost:3001).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Docker API:**  
+  Start the backend API and database with Docker Compose (from project root):
+  ```bash
+  docker compose up --build game-api postgres
+  ```
+  The API will run at [http://localhost:3001](http://localhost:3001).
+
+---
+
+### 4. Start the Frontend Locally
+
+```bash
+pnpm install
+pnpm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to access the frontend application.
+
+---
+
+### 5. Switching API Endpoints
+
+- To use the local API, set `NEXT_PUBLIC_API_URL=http://localhost:3001` in your `.env`.
+- To use the Docker API, also use `NEXT_PUBLIC_API_URL=http://localhost:3001` (since Docker exposes the API on your host).
+
+---
+
+## Useful Scripts
+
+- **Build:** `pnpm run build`
+- **Lint:** `pnpm run lint`
+- **Test:** `pnpm run test`
+
+---
+
+## .env-example
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
