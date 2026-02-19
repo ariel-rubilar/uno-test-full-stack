@@ -1,6 +1,6 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
 
-import { SessionAuthGuard } from '../../shared/infractucture/session/session.guard';
+import { SessionAuthGuard } from '../../shared/infrastructure/session/session.guard';
 import { GameGenerator } from './application/game-generator';
 
 @Controller('gameplays')

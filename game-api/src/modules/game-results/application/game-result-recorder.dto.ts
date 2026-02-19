@@ -1,4 +1,4 @@
-export type Commad = {
+export type Command = {
   playerName: string;
   playerRun: string;
   correctPairs: number;

@@ -3,7 +3,7 @@ import { USER_REPOSITORY } from './auth.tokens';
 import { UserIdentifier } from './application/identifier';
 import { UserRepository } from './domain/repository';
 import { AuthController } from './auth.controller';
-import { SessionModule } from 'src/shared/infractucture/session/session.module';
+import { SessionModule } from 'src/shared/infrastructure/session/session.module';
 import { UserGetter } from './application/getter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './infrastructure/persistence/postgres/user.entity';

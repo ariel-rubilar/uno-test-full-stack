@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { SessionModule } from '../../shared/infractucture/session/session.module';
+import { SessionModule } from '../../shared/infrastructure/session/session.module';
 
-import { GameResultsController } from './game-reults.controller';
+import { GameResultsController } from './game-results.controller';
 import { GAME_RESULT_REPOSITORY } from './game-results.token';
-import { GameResultRecoder } from './application/game-result-recoder';
+import { GameResultRecorder } from './application/game-result-recorder';
 import { GameResultRepository } from './domain/game-result-repository';
 import { GameResultFinder } from './application/game-result-finder';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -20,8 +20,8 @@ import { TypeOrmGameResultsRepository } from './infrastructure/persistence/postg
       useClass: TypeOrmGameResultsRepository,
     },
     {
-      provide: GameResultRecoder,
-      useFactory: (repo: GameResultRepository) => new GameResultRecoder(repo),
+      provide: GameResultRecorder,
+      useFactory: (repo: GameResultRepository) => new GameResultRecorder(repo),
       inject: [GAME_RESULT_REPOSITORY],
     },
     {
@@ -30,7 +30,7 @@ import { TypeOrmGameResultsRepository } from './infrastructure/persistence/postg
       inject: [GAME_RESULT_REPOSITORY],
     },
   ],
-  exports: [GameResultRecoder],
+  exports: [GameResultRecorder],
   controllers: [GameResultsController],
 })
 export class GameResultsModule {}

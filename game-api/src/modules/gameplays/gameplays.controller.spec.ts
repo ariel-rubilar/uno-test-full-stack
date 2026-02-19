@@ -2,8 +2,8 @@ import { Test } from '@nestjs/testing';
 import { GameplaysController } from './gameplays.controller';
 import { GameGenerator } from './application/game-generator';
 import { CardContentProvider } from './application/card-content-provider';
-import { SESSION_STORE } from '../../shared/infractucture/session/session.token';
-import { SessionStore } from '../../shared/infractucture/session/session.store';
+import { SESSION_STORE } from '../../shared/infrastructure/session/session.token';
+import { SessionStore } from '../../shared/infrastructure/session/session.store';
 
 describe('GameplaysController', () => {
   let controller: GameplaysController;

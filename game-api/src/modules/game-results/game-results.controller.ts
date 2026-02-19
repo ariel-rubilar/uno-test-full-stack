@@ -7,14 +7,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { GameResultRecoder } from './application/game-result-recoder';
-import { SessionAuthGuard } from 'src/shared/infractucture/session/session.guard';
+import { GameResultRecorder } from './application/game-result-recorder';
+import { SessionAuthGuard } from 'src/shared/infrastructure/session/session.guard';
 import { GameResultFinder } from './application/game-result-finder';
 
 @Controller('game-results')
 export class GameResultsController {
   constructor(
-    private readonly recoder: GameResultRecoder,
+    private readonly recoder: GameResultRecorder,
     private readonly finder: GameResultFinder,
   ) {}
 

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { SessionModule } from '../../shared/infractucture/session/session.module';
+import { SessionModule } from '../../shared/infrastructure/session/session.module';
 import { GameplaysController } from './gameplays.controller';
 import { GameGenerator } from './application/game-generator';
-import { ApiCardContentProvider } from './infractucture/api/card-content-provider';
+import { ApiCardContentProvider } from './infrastructure/api/card-content-provider';
 import { CARD_CONTENT_PROVIDER } from './gameplays.tokens';
 import { CardContentProvider } from './application/card-content-provider';
 
