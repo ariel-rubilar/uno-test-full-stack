@@ -7,5 +7,8 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./src/shared/test/setup.ts",
+    env: {
+      NEXT_PUBLIC_API_URL: "http://api.example.com",
+    },
   },
 });
