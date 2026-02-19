@@ -12,10 +12,10 @@ import {
 import type { Request, Response } from 'express';
 import { UserIdentifier } from './application/identifier';
 import { UserNotFoundError } from './domain/errors';
-import type { SessionStore } from '../../shared/infractucture/session/session.store';
-import { SessionAuthGuard } from '../../shared/infractucture/session/session.guard';
+import type { SessionStore } from '../../shared/infrastructure/session/session.store';
+import { SessionAuthGuard } from '../../shared/infrastructure/session/session.guard';
 import { UserGetter } from './application/getter';
-import { SESSION_STORE } from '../../shared/infractucture/session/session.token';
+import { SESSION_STORE } from '../../shared/infrastructure/session/session.token';
 
 @Controller('auth')
 export class AuthController {

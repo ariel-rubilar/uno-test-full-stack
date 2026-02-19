@@ -1,8 +1,8 @@
 import { GameResult } from '../domain/game-result';
 import { GameResultRepository } from '../domain/game-result-repository';
-import { Commad } from './game-result-recoder.dto';
+import { Command } from './game-result-recorder.dto';
 
-export class GameResultRecoder {
+export class GameResultRecorder {
   constructor(private readonly repository: GameResultRepository) {}
 
   execute({
@@ -13,7 +13,7 @@ export class GameResultRecoder {
     totalPairs,
     attempts,
     maxAttempts,
-  }: Commad) {
+  }: Command) {
     const result = GameResult.create({
       playerName,
       playerRun,

@@ -5,8 +5,8 @@ import { UserRepository } from './domain/repository';
 import { User } from './domain/user';
 import { Response } from 'express';
 import { UserGetter } from './application/getter';
-import { SESSION_STORE } from '../../shared/infractucture/session/session.token';
-import type { SessionStore } from '../../shared/infractucture/session/session.store';
+import { SESSION_STORE } from '../../shared/infrastructure/session/session.token';
+import type { SessionStore } from '../../shared/infrastructure/session/session.store';
 
 describe('AuthController', () => {
   let controller: AuthController;
