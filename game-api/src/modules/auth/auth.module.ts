@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { USER_REPOSITORY } from './auth.tokens';
-import { InMemoryUserRepository } from './infrastructure/persistence/inmem/user-repository';
 import { UserIdentifier } from './application/identifier';
 import { UserRepository } from './domain/repository';
 import { AuthController } from './auth.controller';
 import { SessionModule } from 'src/shared/infractucture/session/session.module';
 import { UserGetter } from './application/getter';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './infrastructure/persistence/postgres/user.entity';
+import { TypeOrmUserRepository } from './infrastructure/persistence/postgres/user-repository';
 
 @Module({
-  imports: [SessionModule],
+  imports: [SessionModule, TypeOrmModule.forFeature([UserEntity])],
   providers: [
-    InMemoryUserRepository,
+    TypeOrmUserRepository,
     {
       provide: USER_REPOSITORY,
-      useClass: InMemoryUserRepository,
+      useClass: TypeOrmUserRepository,
     },
     {
       provide: UserIdentifier,

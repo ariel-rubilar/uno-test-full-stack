@@ -1,9 +1,27 @@
 services:
+  postgres:
+     image: postgres:16-alpine
+     container_name: app-postgres
+     restart: always
+     environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: postgres
+       POSTGRES_DB: appdb
+     ports:
+       - "5432:5432"
+     volumes:
+       - postgres_data:/var/lib/postgresql/data
   game-api:
     build:
       context: ./game-api
       dockerfile: ./Dockerfile
     image: game-api
+    environment:
+          DB_HOST: postgres
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_NAME: appdb
     ports:
       - "3001:3001"
   game-web:
@@ -19,3 +37,5 @@ services:
       - NEXT_PUBLIC_API_URL=http://game-api:3001
     depends_on:
       - game-api
+volumes:
+    postgres_data:
