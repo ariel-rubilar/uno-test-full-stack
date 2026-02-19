@@ -1,43 +1,43 @@
-FROM node:24-alpine AS base
+FROM node:20-alpine AS base
+WORKDIR /app
 
-# -------- Build Stage --------
+# ------------------
+# Dependencies
+# ------------------
+FROM base AS deps
+
+RUN apk add --no-cache libc6-compat
+
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable pnpm && pnpm install --frozen-lockfile
+
+# ------------------
+# Build
+# ------------------
 FROM base AS builder
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-RUN \
-    if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then npm ci; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
-    else echo "Lockfile not found." && exit 1; \
-    fi
-
-# Copy all application code
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build and remove dev dependencies to keep the final image small
-RUN npm run build  \
-    && npm prune --omit=dev
+RUN corepack enable pnpm && pnpm build
 
-# -------- Production Stage --------
-FROM base AS runner
+# ------------------
+# Production
+# ------------------
+FROM node:20-alpine AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
 
-# Use a dedicated, non-root user for security
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nestjs -u 1001
+RUN addgroup -S nodejs && adduser -S nestjs -G nodejs
 
-# Copy only necessary files from the builder stage
-COPY --from=builder --chown=node:nestjs:nodejs /app/package*.json ./
-COPY --from=builder --chown=node:nestjs:nodejs /app/node_modules/ ./node_modules/
-COPY --from=builder --chown=node:nestjs:nodejs /app/dist/ ./dist/
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 
 USER nestjs
 
-# Expose the port the app runs on (default is 3001 for NestJS)
 EXPOSE 3001
 
-# Command to run the production application
 CMD ["node", "dist/main.js"]

@@ -1,11 +1,4 @@
 services:
-  game-web:
-    build:
-      context: ./game-web
-      dockerfile: ./Dockerfile
-    image: game-web
-    ports:
-      - "3000:3000"
   game-api:
     build:
       context: ./game-api
@@ -13,3 +6,16 @@ services:
     image: game-api
     ports:
       - "3001:3001"
+  game-web:
+    build:
+      context: ./game-web
+      dockerfile: ./Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001
+    image: game-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://game-api:3001
+    depends_on:
+      - game-api
