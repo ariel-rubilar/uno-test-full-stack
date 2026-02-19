@@ -1,10 +1,8 @@
-# syntax=docker/dockerfile:1
-
 FROM node:20-alpine AS base
 WORKDIR /app
 
 # --------------------
-# 1️⃣ Dependencies
+# Dependencies
 # --------------------
 FROM base AS deps
 
@@ -14,9 +12,11 @@ COPY package.json pnpm-lock.yaml ./
 RUN corepack enable pnpm && pnpm install --frozen-lockfile
 
 # --------------------
-# 2️⃣ Build
+# Build
 # --------------------
 FROM base AS builder
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -25,7 +25,7 @@ COPY . .
 RUN corepack enable pnpm && pnpm build
 
 # --------------------
-# 3️⃣ Production
+# Production
 # --------------------
 FROM node:20-alpine AS runner
 WORKDIR /app
