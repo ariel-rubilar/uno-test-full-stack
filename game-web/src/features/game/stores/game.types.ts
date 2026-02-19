@@ -42,4 +42,5 @@ export type GameplayStore = {
     }[],
     maxAttempts: number,
   ) => void;
+  resolveFlippedCards: () => void;
 };

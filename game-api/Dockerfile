@@ -9,7 +9,8 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && pnpm install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@10.29.3 --activate
+RUN pnpm install --frozen-lockfile
 
 # ------------------
 # Build
