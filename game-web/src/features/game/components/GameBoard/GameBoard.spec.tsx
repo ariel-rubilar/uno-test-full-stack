@@ -35,22 +35,14 @@ const createTestQueryClient = () =>
 const renderWithProvider = (ui: React.ReactElement) => {
   const client = createTestQueryClient();
   return render(
-<<<<<<< HEAD
     <GameplayProvider>
-=======
-    <GameplayProvider checkDelay={0}>
->>>>>>> d9c8cad5e0bf888cba33d42d66e7482735ad86ca
       <QueryClientProvider client={client}>{ui}</QueryClientProvider>
     </GameplayProvider>,
   );
 };
 
 const setup = () => {
-<<<<<<< HEAD
   return renderWithProvider(<GameBoard delayToStart={0} delayToValidate={0} />);
-=======
-  return renderWithProvider(<GameBoard delayToStart={0} />);
->>>>>>> d9c8cad5e0bf888cba33d42d66e7482735ad86ca
 };
 
 const startHandler = (
@@ -110,11 +102,6 @@ describe("GameBoard", () => {
     });
 
     it("should render hidden cards", async () => {
-<<<<<<< HEAD
-=======
-      const client = createTestQueryClient();
-
->>>>>>> d9c8cad5e0bf888cba33d42d66e7482735ad86ca
       server.use(
         startHandler(
           [
@@ -134,17 +121,7 @@ describe("GameBoard", () => {
           1,
         ),
       );
-<<<<<<< HEAD
       setup();
-=======
-      render(
-        <GameplayProvider checkDelay={0}>
-          <QueryClientProvider client={client}>
-            <GameBoard delayToStart={0} />
-          </QueryClientProvider>
-        </GameplayProvider>,
-      );
->>>>>>> d9c8cad5e0bf888cba33d42d66e7482735ad86ca
 
       await waitFor(() => {
         const hiddenCards = screen.getAllByLabelText(/Hidden card/);

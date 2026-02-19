@@ -10,12 +10,10 @@ const GameplayContext = createContext<StoreApi<GameplayStore> | null>(null);
 
 export const GameplayProvider = ({
   children,
-  checkDelay,
 }: {
   children: React.ReactNode;
-  checkDelay?: number;
 }) => {
-  const [store] = useState(() => createGameplayStore({ checkDelay }));
+  const [store] = useState(() => createGameplayStore());
 
   return (
     <GameplayContext.Provider value={store}>
