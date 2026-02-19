@@ -81,11 +81,11 @@ export class GameResult {
     return this.updatedAt;
   }
 
-  getAttemps() {
+  getAttempts() {
     return this.attempts;
   }
 
-  getMaxAttemps() {
+  getMaxAttempts() {
     return this.maxAttempts;
   }
 }

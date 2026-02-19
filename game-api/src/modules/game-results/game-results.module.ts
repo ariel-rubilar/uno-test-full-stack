@@ -3,19 +3,21 @@ import { Module } from '@nestjs/common';
 import { SessionModule } from '../../shared/infractucture/session/session.module';
 
 import { GameResultsController } from './game-reults.controller';
-import { InMemoryGameResultsRepository } from './infrastructure/persistence/inmem/game-results-repository';
 import { GAME_RESULT_REPOSITORY } from './game-results.token';
 import { GameResultRecoder } from './application/game-result-recoder';
 import { GameResultRepository } from './domain/game-result-repository';
 import { GameResultFinder } from './application/game-result-finder';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { GameResultEntity } from './infrastructure/persistence/postgres/game-result.entity';
+import { TypeOrmGameResultsRepository } from './infrastructure/persistence/postgres/game-results-repository';
 
 @Module({
-  imports: [SessionModule],
+  imports: [SessionModule, TypeOrmModule.forFeature([GameResultEntity])],
   providers: [
-    InMemoryGameResultsRepository,
+    TypeOrmGameResultsRepository,
     {
       provide: GAME_RESULT_REPOSITORY,
-      useClass: InMemoryGameResultsRepository,
+      useClass: TypeOrmGameResultsRepository,
     },
     {
       provide: GameResultRecoder,
