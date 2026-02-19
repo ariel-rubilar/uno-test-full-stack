@@ -10,9 +10,13 @@ import { useLazyStartGame } from "../../hooks/useLazyStartGame";
 
 export const GameBoard = ({
   delayToStart = 1500,
+  delayToValidate = 800,
 }: {
   delayToStart?: number;
+  delayToValidate?: number;
 }) => {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const cards = useGameplayStore((s) => s.cards);
   const startGame = useGameplayStore((s) => s.start);
   const loadCards = useGameplayStore((s) => s.loadCard);
@@ -23,8 +27,9 @@ export const GameBoard = ({
   const correctPairs = useGameplayStore((s) => s.correctPairs);
   const totalPairs = useGameplayStore((s) => s.totalPairs);
   const failedAttempts = useGameplayStore((s) => s.failedAttempts);
-
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const resolveFlippedCards = useGameplayStore((s) => s.resolveFlippedCards);
+  const flippedIds = useGameplayStore((s) => s.flippedIds);
+  const isGameOver = gameStatus !== "playing" && gameStatus !== "loading";
 
   const { mutate } = useRecordResult();
 
@@ -66,27 +71,35 @@ export const GameBoard = ({
     };
   }, [initGame]);
 
-  const handleRetry = async () => {
-    await initGame();
-  };
+  useEffect(() => {
+    if (flippedIds.length === 2) {
+      const timeout = setTimeout(() => {
+        resolveFlippedCards();
+      }, delayToValidate);
 
-  const saveResult = useCallback(() => {
-    mutate({
-      correctPairs,
-      failedAttempts,
-      totalPairs,
-      attempts,
-      maxAttempts,
-    });
-  }, [correctPairs, failedAttempts, totalPairs, attempts, maxAttempts, mutate]);
-
-  const isGaveOver = gameStatus !== "playing" && gameStatus !== "loading";
+      return () => clearTimeout(timeout);
+    }
+  }, [flippedIds, resolveFlippedCards, delayToValidate]);
 
   useEffect(() => {
-    if (isGaveOver) {
-      saveResult();
+    if (isGameOver) {
+      mutate({
+        correctPairs,
+        failedAttempts,
+        totalPairs,
+        attempts,
+        maxAttempts,
+      });
     }
-  }, [gameStatus, saveResult, isGaveOver]);
+  }, [
+    isGameOver,
+    mutate,
+    correctPairs,
+    failedAttempts,
+    totalPairs,
+    attempts,
+    maxAttempts,
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -106,11 +119,11 @@ export const GameBoard = ({
           />
         ))}
       </div>
-      {isGaveOver && (
+      {isGameOver && (
         <GameOver
           attempts={attempts}
           correctPairs={correctPairs}
-          onReplay={handleRetry}
+          onReplay={initGame}
           won={gameStatus === "won"}
           maxAttempts={maxAttempts}
           totalPairs={totalPairs}

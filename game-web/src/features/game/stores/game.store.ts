@@ -1,11 +1,7 @@
 import { GameplayStore, GameStatus } from "./game.types";
 import { createStore } from "zustand/vanilla";
 
-export const createGameplayStore = ({
-  checkDelay = 800,
-}: {
-  checkDelay?: number;
-}) =>
+export const createGameplayStore = () =>
   createStore<GameplayStore>((set) => ({
     attempts: 0,
     cards: [],
@@ -64,73 +60,55 @@ export const createGameplayStore = ({
         };
       }),
     flipCard: (id: string) => {
-      let shouldResolve = false;
-
       set((state) => {
         if (state.flippedIds.length >= 2 || state.flippedIds.includes(id)) {
           return state;
         }
-
-        const newFlipped = [...state.flippedIds, id];
-
-        shouldResolve = newFlipped.length === 2;
-
         return {
           cards: state.cards.map((c) =>
             c.id === id ? { ...c, isFlipped: true } : c,
           ),
-          flippedIds: newFlipped,
+          flippedIds: [...state.flippedIds, id],
         };
       });
+    },
+    resolveFlippedCards: () => {
+      set((state) => {
+        const [a, b] = state.flippedIds;
+        const first = state.cards.find((c) => c.id === a);
+        const second = state.cards.find((c) => c.id === b);
 
-      if (!shouldResolve) return;
+        if (!first || !second) return state;
 
-      const timeout = setTimeout(() => {
-        set((state) => {
-          const [a, b] = state.flippedIds;
-          const first = state.cards.find((c) => c.id === a);
-          const second = state.cards.find((c) => c.id === b);
+        const isMatch = first.value === second.value;
+        const newAttempts = state.attempts + 1;
+        const newFailedAttempts = state.failedAttempts + 1;
+        const newCards = state.cards.map((c) =>
+          c.id === a || c.id === b
+            ? {
+                ...c,
+                isMatched: isMatch,
+                isFlipped: isMatch,
+              }
+            : c,
+        );
+        const isAllMatched = newCards.every((c) => c.isMatched);
 
-          if (!first || !second) return state;
+        let newStatus: GameStatus = state.gameStatus;
+        if (isAllMatched) {
+          newStatus = "won";
+        } else if (newAttempts >= state.maxAttempts) {
+          newStatus = "lost";
+        }
 
-          const isMatch = first.value === second.value;
-
-          const newFailedAttempts = state.failedAttempts + 1;
-
-          const newAttempts = state.attempts + 1;
-
-          const newCards = state.cards.map((c) =>
-            c.id === a || c.id === b
-              ? {
-                  ...c,
-                  isMatched: isMatch,
-                  isFlipped: isMatch,
-                }
-              : c,
-          );
-
-          const isAllMatched = newCards.every((c) => c.isMatched);
-
-          let newStatus: GameStatus = state.gameStatus;
-
-          if (isAllMatched) {
-            newStatus = "won";
-          } else if (newAttempts >= state.maxAttempts) {
-            newStatus = "lost";
-          }
-
-          return {
-            cards: newCards,
-            flippedIds: [],
-            attempts: newAttempts,
-            correctPairs: isMatch ? state.correctPairs + 1 : state.correctPairs,
-            timeoutId: null,
-            gameStatus: newStatus,
-            failedAttempts: newFailedAttempts,
-          };
-        });
-      }, checkDelay);
-
-      set({ timeoutId: timeout });
+        return {
+          cards: newCards,
+          flippedIds: [],
+          attempts: newAttempts,
+          correctPairs: isMatch ? state.correctPairs + 1 : state.correctPairs,
+          gameStatus: newStatus,
+          failedAttempts: newFailedAttempts,
+        };
+      });
     },
   }));
