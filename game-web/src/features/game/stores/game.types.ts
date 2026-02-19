@@ -40,6 +40,6 @@ export type GameplayStore = {
       url: string;
       label: string;
     }[],
-    maxAttems: number,
+    maxAttempts: number,
   ) => void;
 };

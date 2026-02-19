@@ -1,7 +1,11 @@
 import { GameplayStore, GameStatus } from "./game.types";
 import { createStore } from "zustand/vanilla";
 
-export const createGameplayStore = () =>
+export const createGameplayStore = ({
+  checkDelay = 800,
+}: {
+  checkDelay?: number;
+}) =>
   createStore<GameplayStore>((set) => ({
     attempts: 0,
     cards: [],
@@ -38,7 +42,7 @@ export const createGameplayStore = () =>
         url: string;
         label: string;
       }[],
-      maxAttemps: number,
+      maxAttempts: number,
     ) =>
       set((state) => {
         if (state.timeoutId) clearTimeout(state.timeoutId);
@@ -53,7 +57,7 @@ export const createGameplayStore = () =>
           gameStatus: "loading",
           correctPairs: 0,
           flippedIds: [],
-          maxAttempts: maxAttemps,
+          maxAttempts: maxAttempts,
           timeoutId: null,
           totalPairs: cards.length / 2,
           failedAttempts: 0,
@@ -79,7 +83,6 @@ export const createGameplayStore = () =>
         };
       });
 
-      // ✅ Only resolve when 2 cards are flipped
       if (!shouldResolve) return;
 
       const timeout = setTimeout(() => {
@@ -94,7 +97,7 @@ export const createGameplayStore = () =>
 
           const newFailedAttempts = state.failedAttempts + 1;
 
-          const newAttemps = state.attempts + 1;
+          const newAttempts = state.attempts + 1;
 
           const newCards = state.cards.map((c) =>
             c.id === a || c.id === b
@@ -112,21 +115,21 @@ export const createGameplayStore = () =>
 
           if (isAllMatched) {
             newStatus = "won";
-          } else if (newAttemps >= state.maxAttempts) {
+          } else if (newAttempts >= state.maxAttempts) {
             newStatus = "lost";
           }
 
           return {
             cards: newCards,
             flippedIds: [],
-            attempts: newAttemps,
+            attempts: newAttempts,
             correctPairs: isMatch ? state.correctPairs + 1 : state.correctPairs,
             timeoutId: null,
             gameStatus: newStatus,
             failedAttempts: newFailedAttempts,
           };
         });
-      }, 800);
+      }, checkDelay);
 
       set({ timeoutId: timeout });
     },
