@@ -90,3 +90,12 @@ To see running containers:
 ```bash
 docker compose ps
 ```
+
+---
+
+## More Information
+
+- For backend/API details and advanced usage, see [game-api/README.md](./game-api/README.md)
+- For frontend/web details and advanced usage, see [game-web/README.md](./game-web/README.md)
+
+````
